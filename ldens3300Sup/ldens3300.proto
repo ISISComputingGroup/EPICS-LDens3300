@@ -1,0 +1,9 @@
+InTerminator = CR LF;
+
+getTemperature {
+    in "T= %f %*s D= %*f %*s";
+}
+
+getDensity {
+    in "T= %*f %*s D= %f %*s";
+}
