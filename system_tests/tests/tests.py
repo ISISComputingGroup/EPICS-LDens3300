@@ -3,8 +3,7 @@ import unittest
 from utils.channel_access import ChannelAccess
 from utils.ioc_launcher import get_default_ioc_dir
 from utils.test_modes import TestModes
-from utils.testing import get_running_lewis_and_ioc, skip_if_recsim
-
+from utils.testing import get_running_lewis_and_ioc
 
 DEVICE_PREFIX = "LDNS3300_01"
 
@@ -26,12 +25,12 @@ class Ldens3300Tests(unittest.TestCase):
     """
     Tests for the _Device_ IOC.
     """
+
     def setUp(self):
         self._lewis, self._ioc = get_running_lewis_and_ioc("ldens3300", DEVICE_PREFIX)
         self.ca = ChannelAccess(device_prefix=DEVICE_PREFIX)
 
     def test_GIVEN_device_disconnected_THEN_pvs_in_error(self):
-
         with self._lewis.backdoor_simulate_disconnected_device():
             self.ca.assert_that_pv_alarm_is("TEMP", self.ca.Alarms.INVALID, timeout=30)
             self.ca.assert_that_pv_alarm_is("DENSITY", self.ca.Alarms.INVALID, timeout=30)
@@ -40,7 +39,6 @@ class Ldens3300Tests(unittest.TestCase):
         self.ca.assert_that_pv_alarm_is("DENSITY", self.ca.Alarms.NONE, timeout=30)
 
     def test_GIVEN_device_connected_THEN_pvs_have_values(self):
-
         temp = 30.0
         dens = 10.0
 
