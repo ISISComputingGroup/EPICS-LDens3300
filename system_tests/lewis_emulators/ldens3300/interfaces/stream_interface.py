@@ -22,18 +22,16 @@ class Ldens3300StreamInterface(StreamInterface):
         timer.daemon = True
         timer.start()
 
-    def handle_error(self, request: str, error: str) -> str:
+    def handle_error(self, request: str, error: str) -> None:
         print("An error occurred at request " + repr(request) + ": " + repr(error))
-        return str(error)
 
     @if_connected
-    def unsolicited_reply(self, handler: str) -> any:
-        self.log.info("hello")
-        handler.unsolicited_reply(
+    def unsolicited_reply(self, handler: str) -> None:
+         handler.unsolicited_reply(
             f"T= {self.device.temperature} <°C> D= {self.device.density} <kg/m³>"
         )
 
-    def get_data_unsolicited(self) -> any:
+    def get_data_unsolicited(self) -> None:
         self._queue_next_unsolicited_message()
 
         try:
