@@ -5,13 +5,13 @@ from utils.ioc_launcher import get_default_ioc_dir
 from utils.test_modes import TestModes
 from utils.testing import get_running_lewis_and_ioc
 
-DEVICE_PREFIX = "LDNS3300_01"
+DEVICE_PREFIX = "LDEN3300_01"
 
 
 IOCS = [
     {
         "name": DEVICE_PREFIX,
-        "directory": get_default_ioc_dir("LDNS3300"),
+        "directory": get_default_ioc_dir("LDEN3300"),
         "macros": {},
         "emulator": "ldens3300",
     },
