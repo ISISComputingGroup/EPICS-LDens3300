@@ -1,6 +1,6 @@
 import unittest
 
-from utils.channel_access import ChannelAccess # pyright: ignore [reportMissingImports]
+from utils.channel_access import ChannelAccess  # pyright: ignore [reportMissingImports]
 from utils.ioc_launcher import get_default_ioc_dir  # pyright: ignore [reportMissingImports]
 from utils.test_modes import TestModes  # pyright: ignore [reportMissingImports]
 from utils.testing import get_running_lewis_and_ioc  # pyright: ignore [reportMissingImports]
