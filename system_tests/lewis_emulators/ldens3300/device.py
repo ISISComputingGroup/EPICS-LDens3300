@@ -23,5 +23,5 @@ class SimulatedLdens3300(StateMachineDevice):
     def _get_initial_state(self) -> str:
         return "default"
 
-    def _get_transition_handlers(self) -> dict[tuple[str, str], Callable[[], bool]]:
+    def _get_transition_handlers(self) -> dict[tuple[State, State], Callable[[], bool]]:
         return OrderedDict([])

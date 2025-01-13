@@ -1,6 +1,6 @@
 import threading
 
-from lewis.adapters.stream import StreamInterface
+from lewis.adapters.stream import StreamHandler, StreamInterface
 from lewis.core.logging import has_log
 from lewis.utils.replies import conditional_reply
 
@@ -25,17 +25,17 @@ class Ldens3300StreamInterface(StreamInterface):
     def handle_error(self, request: str, error: str) -> None:
         print("An error occurred at request " + repr(request) + ": " + repr(error))
 
-    @if_connected
-    def unsolicited_reply(self, handler: str) -> None:
-         handler.unsolicited_reply(
-            f"T= {self.device.temperature} <°C> D= {self.device.density} <kg/m³>"
+    @if_connected  # pyright: ignore [reportCallIssue]
+    def unsolicited_reply(self, handler: StreamHandler) -> None:
+        handler.unsolicited_reply(
+            f"T= {self.device.temperature} <°C> D= {self.device.density} <kg/m³>"  # pyright: ignore [reportOptionalMemberAccess]
         )
 
     def get_data_unsolicited(self) -> None:
         self._queue_next_unsolicited_message()
 
         try:
-            handler = self.handler
+            handler = self.handler  # pyright: ignore [reportAttributeAccessIssue]
         except AttributeError:
             # Happens if no client is currently connected.
             return
