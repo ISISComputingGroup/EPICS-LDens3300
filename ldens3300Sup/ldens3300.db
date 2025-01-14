@@ -1,0 +1,72 @@
+record(bo, "$(P)SIM")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "Soft Channel")
+    field(ZNAM, "NO")
+    field(ONAM, "YES")
+    field(VAL, "$(RECSIM=0)")
+    field(PINI, "YES")
+}
+
+record(bo, "$(P)DISABLE")
+{
+    field(DESC, "Disable comms")
+    field(PINI, "YES")
+    field(VAL, "$(DISABLE=0)")
+    field(OMSL, "supervisory")
+    field(ZNAM, "COMMS ENABLED")
+    field(ONAM, "COMMS DISABLED")
+}
+
+record(ai, "$(P)TEMP:_RAW") {
+    field(DTYP, "stream")
+    field(INP, "@ldens3300.proto getTemperature $(PORT)")
+    field(SCAN, "I/O Intr")
+    field(FLNK, "$(P)_REFRESH_LAST_MESSAGE")
+}
+
+record(calc, "$(P)TEMP") {
+    field(DESC, "Temperature DegC")
+    field(EGU, "C")
+    field(PREC, "2")
+    field(INPA, "$(P)TEMP:_RAW CP MSS")
+    field(INPB, "$(P)_READINGS_OUTDATED CP MSS")
+    field(CALC, "A")
+}
+
+record(ai, "$(P)DENSITY:_RAW") {
+    field(DTYP, "stream")
+    field(INP, "@ldens3300.proto getDensity $(PORT)")
+    field(SCAN, "I/O Intr")
+    field(FLNK, "$(P)_REFRESH_LAST_MESSAGE")
+}
+
+record(calc, "$(P)DENSITY") {
+    field(DESC, "Density kg/m3")
+    field(EGU, "kg/m^3")
+    field(PREC, "2")
+    field(INPA, "$(P)DENSITY:_RAW CP MSS")
+    field(INPB, "$(P)_READINGS_OUTDATED CP MSS")
+    field(CALC, "A")
+}
+
+record(calcout, "$(P)_REFRESH_LAST_MESSAGE") {
+    field(INPA, "$(PVPREFIX)CS:IOC:$(IOCNAME):DEVIOS:GTIM_TIME")
+    field(CALC, "A")
+    field(OUT, "$(P)_LAST_MESSAGE_TIME PP")
+}
+
+record(ao, "$(P)_LAST_MESSAGE_TIME") {}
+
+record(calcout, "$(P)_READINGS_OUTDATED_CALC") {
+    field(INPA, "$(PVPREFIX)CS:IOC:$(IOCNAME):DEVIOS:GTIM_TIME CP")
+    field(INPB, "$(P)_LAST_MESSAGE_TIME CP")
+    field(CALC, "(A-B)>10") # Go into error if no message received in 10 seconds
+    field(OUT, "$(P)_READINGS_OUTDATED PP")
+}
+
+record(bo, "$(P)_READINGS_OUTDATED") {
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+    field(OSV, "INVALID")
+}
